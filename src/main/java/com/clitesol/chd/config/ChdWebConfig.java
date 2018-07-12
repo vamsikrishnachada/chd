@@ -19,7 +19,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
     @Override
     public	void configure(WebSecurity web)	throws Exception	{
         web.ignoring().antMatchers(
-                "/api/**",	"/img/**",	"/js/**",	"/favicon.ico");
+                "/api/**/**","/api/**",	"/img/**",	"/js/**",	"/favicon.ico");
     }
 
     @Override

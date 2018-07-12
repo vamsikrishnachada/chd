@@ -11,6 +11,9 @@ import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.util.Collection;
@@ -65,8 +68,12 @@ public class ChdAppConfig extends AbstractMongoConfiguration {
     @Bean
     public MongoTemplate mongoTemplate() throws Exception
     {
-        final UserCredentials userCredentials = new UserCredentials(this.userName, this.password);
-        final MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory(),super.mappingMongoConverter());
+        MappingMongoConverter converter = new MappingMongoConverter(
+                new DefaultDbRefResolver(mongoDbFactory()), new MongoMappingContext());
+        //CALL THIS MANULLY, so that all the default convertors will be registered!
+        converter.afterPropertiesSet();
+
+        final MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory(),converter);
         mongoTemplate.setWriteConcern(WriteConcern.SAFE);
 
         return mongoTemplate;
