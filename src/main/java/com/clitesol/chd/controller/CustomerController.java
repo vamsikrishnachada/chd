@@ -20,7 +20,7 @@ public class CustomerController  {
 
 
 
-    @RequestMapping("/all")
+    @RequestMapping("/allCustomer")
     public List<Customer> search(){
         return customerService.getAll();
     }
